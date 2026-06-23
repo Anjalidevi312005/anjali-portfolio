@@ -12,8 +12,8 @@ export const profile = {
     'Computer Science undergraduate (CGPA 8.85) with hands-on experience in backend development, REST APIs, authentication and payment integration. I’ve shipped production systems serving real users and solved 200+ DSA problems. Currently building backend for a live electronics resale platform.',
   socials: {
     github: 'https://github.com/Anjalidevi312005',
-    linkedin: 'https://www.linkedin.com/',
-    leetcode: 'https://leetcode.com/'
+    linkedin: 'https://www.linkedin.com/in/anjali-devi-267999293',
+    leetcode: 'https://leetcode.com/u/hJ7orr3kCE/'
   }
 };
 
