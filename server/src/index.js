@@ -12,12 +12,12 @@ import { dbState } from './dbState.js';
 const app = express();
 const PORT = process.env.PORT || 5050;
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/anjali_portfolio';
-// CORS: if CLIENT_ORIGIN is set (single URL or comma-separated list) we whitelist
-// those origins. If it's NOT set, allow any origin — fine for a public portfolio,
-// and means the contact form works from the deployed frontend without extra config.
+// CORS: only the deployed frontend + local dev may call the API.
+// CLIENT_ORIGIN env (comma-separated) overrides these defaults if set.
+const DEFAULT_ORIGINS = ['https://anjali-portfolio-sandy.vercel.app', 'http://localhost:5173'];
 const allowedOrigins = process.env.CLIENT_ORIGIN
   ? process.env.CLIENT_ORIGIN.split(',').map((o) => o.trim()).filter(Boolean)
-  : null; // null = allow all
+  : DEFAULT_ORIGINS;
 
 // Behind a hosting proxy (Render/Railway/etc.) — needed for correct client IPs & rate limiting.
 app.set('trust proxy', 1);
@@ -27,8 +27,8 @@ app.use(compression());
 app.use(
   cors({
     origin(origin, cb) {
-      // No whitelist configured → allow everyone. Otherwise only whitelisted (or no-origin) requests.
-      if (!allowedOrigins || !origin || allowedOrigins.includes(origin)) return cb(null, true);
+      // Allow no-origin (curl / same-origin / server-to-server) and whitelisted origins only.
+      if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
       cb(new Error(`Origin ${origin} not allowed by CORS`));
     }
   })
