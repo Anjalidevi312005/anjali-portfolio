@@ -67,8 +67,8 @@ export default function Hero() {
             <a className="btn btn-primary" href="#projects">
               View My Work →
             </a>
-            <a className="btn btn-ghost" href="/Anjali_Devi_Resume.pdf" target="_blank" rel="noreferrer">
-              ⬇ Download Resume
+            <a className="btn btn-ghost" href="#contact">
+              Get in Touch
             </a>
           </motion.div>
 

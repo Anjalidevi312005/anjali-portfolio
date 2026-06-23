@@ -32,8 +32,8 @@ export default function Navbar() {
               {label}
             </a>
           ))}
-          <a className="btn btn-primary nav-cta" href="/Anjali_Devi_Resume.pdf" target="_blank" rel="noreferrer">
-            Resume
+          <a className="btn btn-primary nav-cta" href="#contact">
+            Let’s Talk
           </a>
         </div>
 
@@ -48,9 +48,6 @@ export default function Navbar() {
             {label}
           </a>
         ))}
-        <a href="/Anjali_Devi_Resume.pdf" target="_blank" rel="noreferrer" onClick={() => setOpen(false)}>
-          Download Resume ↗
-        </a>
       </div>
     </nav>
   );
