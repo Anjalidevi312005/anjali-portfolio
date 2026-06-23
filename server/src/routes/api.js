@@ -4,7 +4,6 @@ import Message from '../models/Message.js';
 import Project from '../models/Project.js';
 import Skill from '../models/Skill.js';
 import { projects as seedProjects, skills as seedSkills } from '../data/seedData.js';
-import { dbState } from '../dbState.js';
 
 const router = Router();
 
@@ -46,7 +45,13 @@ router.get('/skills', async (_req, res) => {
 
 // POST /api/contact — save a visitor message.
 router.post('/contact', async (req, res) => {
-  const { name, email, subject, message } = req.body || {};
+  const { name, email, subject, message, website } = req.body || {};
+
+  // Honeypot: real users never see/fill `website`. If it's set, it's a bot —
+  // pretend success so the bot doesn't retry, but discard the message.
+  if (website && String(website).trim()) {
+    return res.status(201).json({ ok: true, message: 'Thanks! Your message has been received.' });
+  }
 
   if (!name || !String(name).trim()) {
     return res.status(400).json({ error: 'Please enter your name.' });
@@ -73,14 +78,10 @@ router.post('/contact', async (req, res) => {
   }
 });
 
-// Health check.
+// Health check. Reports only connection status — no internal error details
+// are exposed publicly (avoids leaking DB host/auth info).
 router.get('/health', (_req, res) => {
-  const connected = dbReady();
-  res.json({
-    status: 'ok',
-    db: connected ? 'connected' : 'disconnected',
-    ...(connected ? {} : { dbError: dbState.lastError, attempts: dbState.attempts })
-  });
+  res.json({ status: 'ok', db: dbReady() ? 'connected' : 'disconnected' });
 });
 
 export default router;

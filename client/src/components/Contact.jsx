@@ -3,7 +3,8 @@ import Reveal from './Reveal.jsx';
 import { sendMessage } from '../api.js';
 import { profile } from '../data/content.js';
 
-const EMPTY = { name: '', email: '', subject: '', message: '' };
+// `website` is a honeypot: it's hidden from real users, so only bots fill it.
+const EMPTY = { name: '', email: '', subject: '', message: '', website: '' };
 
 export default function Contact() {
   const [form, setForm] = useState(EMPTY);
@@ -78,6 +79,18 @@ export default function Contact() {
               <textarea id="message" name="message" value={form.message} onChange={onChange}
                 placeholder="Write your message…" required />
             </div>
+
+            {/* Honeypot — hidden from humans; bots that fill it get silently rejected. */}
+            <input
+              type="text"
+              name="website"
+              value={form.website}
+              onChange={onChange}
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }}
+            />
 
             <button className="btn btn-primary" type="submit" disabled={status.state === 'loading'}>
               {status.state === 'loading' ? 'Sending…' : 'Send Message →'}
