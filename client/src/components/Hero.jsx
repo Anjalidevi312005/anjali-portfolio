@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { profile } from '../data/content.js';
+import { GitHubIcon, LinkedInIcon, LeetCodeIcon, MailIcon } from './icons.jsx';
 
 const ROLES = ['Software Engineer', 'Backend Developer', 'MERN Stack Dev', 'Problem Solver'];
 
@@ -72,10 +73,10 @@ export default function Hero() {
           </motion.div>
 
           <motion.div className="hero-socials" variants={item}>
-            <a href={profile.socials.github} target="_blank" rel="noreferrer" title="GitHub">GH</a>
-            <a href={profile.socials.linkedin} target="_blank" rel="noreferrer" title="LinkedIn">IN</a>
-            <a href={profile.socials.leetcode} target="_blank" rel="noreferrer" title="LeetCode">LC</a>
-            <a href={`mailto:${profile.email}`} title="Email">@</a>
+            <a href={profile.socials.github} target="_blank" rel="noreferrer" title="GitHub" aria-label="GitHub"><GitHubIcon /></a>
+            <a href={profile.socials.linkedin} target="_blank" rel="noreferrer" title="LinkedIn" aria-label="LinkedIn"><LinkedInIcon /></a>
+            <a href={profile.socials.leetcode} target="_blank" rel="noreferrer" title="LeetCode" aria-label="LeetCode"><LeetCodeIcon /></a>
+            <a href={`mailto:${profile.email}`} title="Email" aria-label="Email"><MailIcon /></a>
           </motion.div>
         </motion.div>
 
