@@ -7,6 +7,7 @@ import mongoose from 'mongoose';
 import rateLimit from 'express-rate-limit';
 import apiRoutes from './routes/api.js';
 import { seedDatabase } from './seed.js';
+import { dbState } from './dbState.js';
 
 const app = express();
 const PORT = process.env.PORT || 5050;
@@ -43,18 +44,27 @@ app.get('/', (_req, res) => {
   res.send('Anjali Devi — Portfolio API is running. Try /api/health');
 });
 
-// Connect to MongoDB, then start the server.
-async function start() {
+// Try to connect to MongoDB, retrying in the background so the server
+// recovers automatically once the URI / network access is fixed —
+// no manual redeploy needed.
+async function connectWithRetry() {
+  dbState.attempts += 1;
   try {
-    await mongoose.connect(MONGO_URI, { serverSelectionTimeoutMS: 5000 });
+    await mongoose.connect(MONGO_URI, { serverSelectionTimeoutMS: 8000 });
+    dbState.lastError = null;
     console.log('✓ MongoDB connected');
     await seedDatabase();
   } catch (err) {
-    // The API still boots and serves seed-data fallbacks without a DB.
-    console.warn('⚠ MongoDB not connected:', err.message);
-    console.warn('  → API will serve fallback data; contact form will be disabled until DB is up.');
+    dbState.lastError = err.message;
+    console.warn(`⚠ MongoDB not connected (attempt ${dbState.attempts}):`, err.message);
+    console.warn('  → Serving fallback data; retrying in 15s…');
+    setTimeout(connectWithRetry, 15000);
   }
+}
 
+// Start the HTTP server immediately; DB connects (and retries) in the background.
+function start() {
+  connectWithRetry();
   app.listen(PORT, () => {
     console.log(`✓ Server listening on http://localhost:${PORT}`);
   });

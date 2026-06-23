@@ -4,6 +4,7 @@ import Message from '../models/Message.js';
 import Project from '../models/Project.js';
 import Skill from '../models/Skill.js';
 import { projects as seedProjects, skills as seedSkills } from '../data/seedData.js';
+import { dbState } from '../dbState.js';
 
 const router = Router();
 
@@ -74,7 +75,12 @@ router.post('/contact', async (req, res) => {
 
 // Health check.
 router.get('/health', (_req, res) => {
-  res.json({ status: 'ok', db: dbReady() ? 'connected' : 'disconnected' });
+  const connected = dbReady();
+  res.json({
+    status: 'ok',
+    db: connected ? 'connected' : 'disconnected',
+    ...(connected ? {} : { dbError: dbState.lastError, attempts: dbState.attempts })
+  });
 });
 
 export default router;
