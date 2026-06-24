@@ -1,79 +1,49 @@
-# Anjali Devi — Portfolio (MERN Stack)
+# My Portfolio
 
-A personal portfolio website built with the **MERN stack** — MongoDB, Express, React, Node.js — featuring smooth animations (Framer Motion), an elegant light theme, and a working contact form that saves messages to a database.
+This is my personal portfolio website. I built it to showcase my projects, skills and a bit about my background, and to give people an easy way to reach me.
 
-![Stack](https://img.shields.io/badge/Stack-MERN-4f46e5) ![React](https://img.shields.io/badge/React-18-61dafb) ![Node](https://img.shields.io/badge/Node-Express-339933)
+Live at: https://anjali-portfolio-sandy.vercel.app
 
-## ✨ Features
+## What's inside
 
-- **Elegant light + indigo design**, fully responsive (mobile → desktop)
-- **Framer Motion animations** — scroll reveals, typewriter role text, floating photo
-- **Real MERN backend**:
-  - `GET /api/projects` — project data from MongoDB
-  - `GET /api/skills` — skills grouped by category
-  - `POST /api/contact` — saves visitor messages to MongoDB
-- **Graceful fallback** — the site still renders project/skill data even if the database is offline
-- Resume download, social links, scroll-to-top, sticky navbar
+It's a full-stack app:
 
-## 🗂 Project Structure
+- **Frontend** — React (Vite) with Framer Motion for the animations
+- **Backend** — Node + Express
+- **Database** — MongoDB
+
+The projects and skills are served from the backend, and the contact form saves messages to the database. I also wired up an instant alert so I get notified the moment someone reaches out.
+
+## Project structure
 
 ```
-anjali-portfolio/
-├── client/          # React + Vite frontend
-│   ├── public/      # photo, resume PDF, favicon
-│   └── src/
-│       ├── components/   # Navbar, Hero, About, Skills, Experience, Projects, Contact, Footer
-│       ├── data/content.js  # resume content + fallback data
-│       └── api.js       # fetch helpers
-└── server/          # Express + MongoDB backend
-    └── src/
-        ├── models/      # Message, Project, Skill (Mongoose)
-        ├── routes/api.js
-        ├── data/seedData.js
-        └── index.js
+client/   → React frontend
+server/   → Express API + MongoDB models
 ```
 
-## 🚀 Getting Started
+## Running it locally
 
-### 1. Prerequisites
-- [Node.js](https://nodejs.org/) 18+
-- [MongoDB](https://www.mongodb.com/try/download/community) running locally **or** a free [MongoDB Atlas](https://www.mongodb.com/atlas) connection string
+You'll need Node 18+ and a MongoDB connection (local or Atlas).
 
-### 2. Install dependencies
 ```bash
-# from the project root
-npm run install:all
-```
-
-### 3. Configure the backend
-```bash
+# backend
 cd server
-cp .env.example .env      # then edit .env if needed
-```
-Default `MONGO_URI` points to a local MongoDB. For Atlas, paste your connection string.
+cp .env.example .env      # add your MONGO_URI
+npm install
+npm run dev               # runs on http://localhost:5050
 
-### 4. Run it (two terminals)
-```bash
-# Terminal 1 — backend (http://localhost:5050)
-npm run server
-
-# Terminal 2 — frontend (http://localhost:5173)
-npm run client
-```
-Open **http://localhost:5173** 🎉
-
-> The frontend proxies `/api` calls to the backend automatically (see `client/vite.config.js`).
-
-## 🛠 Build for Production
-```bash
-npm run build         # outputs client/dist
+# frontend (in another terminal)
+cd client
+npm install
+npm run dev               # runs on http://localhost:5173
 ```
 
-## 🌐 Deploying
-- **Frontend** → Vercel / Netlify (build command `npm run build`, output `client/dist`)
-- **Backend** → Render / Railway (set `MONGO_URI` + `CLIENT_ORIGIN` env vars)
-- Use **MongoDB Atlas** for a free cloud database
+The frontend proxies `/api` to the backend in development, so you don't need any extra setup.
+
+## Deploying
+
+I deployed the frontend on Vercel and the backend on Render, with the database on MongoDB Atlas. The backend reads its config (DB connection, allowed origins, alert credentials) from environment variables, so nothing sensitive lives in the code.
 
 ---
 
-Built with ❤️ by Anjali Devi · Jaipur, India
+Built and maintained by me — Anjali Devi. Feel free to look around the code.

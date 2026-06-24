@@ -6,7 +6,7 @@ export default function Footer() {
       <div className="container footer-inner">
         <div>
           <div className="brand">Anjali<span style={{ color: 'var(--accent)' }}>.</span></div>
-          <p>© {new Date().getFullYear()} Anjali Devi · Built with the MERN stack.</p>
+          <p>© {new Date().getFullYear()} Anjali Devi · All rights reserved.</p>
         </div>
         <div className="footer-socials">
           <a href={profile.socials.github} target="_blank" rel="noreferrer">GitHub</a>
