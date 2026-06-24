@@ -5,6 +5,7 @@ import Project from '../models/Project.js';
 import Skill from '../models/Skill.js';
 import { projects as seedProjects, skills as seedSkills } from '../data/seedData.js';
 import { sendContactNotification } from '../services/email.js';
+import { sendTelegramAlert } from '../services/telegram.js';
 
 const router = Router();
 
@@ -72,9 +73,11 @@ router.post('/contact', async (req, res) => {
 
   try {
     await Message.create({ name, email, subject, message });
-    // Fire-and-forget email notification — never block or fail the response on it.
+    // Fire-and-forget alerts — never block or fail the response on them.
     sendContactNotification({ name, email, subject, message })
       .catch((e) => console.error('email notify failed:', e.message));
+    sendTelegramAlert({ name, email, subject, message })
+      .catch((e) => console.error('telegram notify failed:', e.message));
     res.status(201).json({ ok: true, message: 'Thanks! Your message has been received.' });
   } catch (err) {
     console.error('contact save failed:', err.message);
