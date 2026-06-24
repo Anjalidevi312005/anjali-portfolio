@@ -7,8 +7,12 @@ const { EMAIL_USER, EMAIL_PASS, NOTIFY_TO } = process.env;
 let transporter = null;
 if (EMAIL_USER && EMAIL_PASS) {
   transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: { user: EMAIL_USER, pass: EMAIL_PASS }
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
+    auth: { user: EMAIL_USER, pass: EMAIL_PASS },
+    // Render's free tier has no outbound IPv6 — force IPv4 to avoid ENETUNREACH.
+    family: 4
   });
   console.log('✓ Email notifications enabled');
 } else {
